@@ -1,30 +1,17 @@
 import 'package:equatable/equatable.dart';
+import 'package:footballpassport/blocs/models/ground.dart';
 
-abstract class HomeStates extends Equatable {
-  HomeStates();
+abstract class HomeStates {}
 
-  @override
-  List<Object> get props => null;
+class HomeUninitializedState extends HomeStates {}
+
+class HomeFetchingState extends HomeStates {}
+
+class HomeFetchedState extends HomeStates {
+  final List<Ground> grounds;
+  HomeFetchedState({this.grounds});
 }
 
-class Loading extends HomeStates {
-  Loading() : super();
-}
+class HomeErrorState extends HomeStates {}
 
-class LoadDataSuccess extends HomeStates {
-  final dynamic data;
-
-  LoadDataSuccess(this.data) : super();
-
-  @override
-  List<Object> get props => data;
-}
-
-class LoadDataFail extends HomeStates {
-  final dynamic error;
-
-  LoadDataFail(this.error) : super();
-
-  @override
-  List<Object> get props => error;
-}
+class HomeEmptyState extends HomeStates {}

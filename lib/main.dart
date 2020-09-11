@@ -1,28 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:bloc/bloc.dart';
-import 'package:footballpassport/blocs/football_passport_delegate.dart';
-import 'package:footballpassport/blocs/home/home.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:footballpassport/screens/home_screen.dart';
+import 'services/graphql_service.dart';
+import 'package:footballpassport/blocs/provider/repository.dart';
+
+GraphQLConfiguration graphQLConfiguration = GraphQLConfiguration();
 
 void main() {
-  BlocSupervisor.delegate = FootballPassportDelegate();
-
-  runApp(FootballPassportApp());
+  GroundRepository groundRepository = GroundRepository();
+  runApp(FootballPassportApp(groundRepository: groundRepository));
 }
-
-String query = r'''
- query {
-  visits {
-    groundName
-    homeTeam
-  }
-}
-''';
 
 class FootballPassportApp extends StatelessWidget {
   // This widget is the root of your application.
+  final GroundRepository groundRepository;
+  FootballPassportApp({this.groundRepository});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -31,10 +23,7 @@ class FootballPassportApp extends StatelessWidget {
         primarySwatch: Colors.green,
       ),
       debugShowCheckedModeBanner: false,
-      home: BlocProvider<HomeBloc>(
-        create: (BuildContext context) => HomeBloc()..add(FetchHomeData(query)),
-        child: HomeScreen(),
-      ),
+      home: HomeScreen(groundRepository: groundRepository),
     );
   }
 }
